@@ -1,5 +1,7 @@
 package org.jcvi.jillion.validation;
 
+import org.jcvi.jillion.validation.seqNonEmpty.*;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;

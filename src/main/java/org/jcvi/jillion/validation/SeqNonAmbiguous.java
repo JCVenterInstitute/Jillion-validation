@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {NucleotideFastaNonAmbigiousValidator.class, ProteinFastaNonAmbigiousValidator.class,
         TraceNonAmbiguiousValidator.class,
         NucleotideSequenceNonAmbigiousValidator.class, ProteinSequenceNonAmbigiousValidator.class})
-public @interface NonAmbiguous {
+public @interface SeqNonAmbiguous {
     String message() default "Sequence can not contain ambiguous residues";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

@@ -6,8 +6,7 @@ import org.jcvi.jillion.fasta.nt.NucleotideFastaRecord;
 import org.jcvi.jillion.fasta.nt.NucleotideFastaRecordBuilder;
 import org.jcvi.jillion.trace.fastq.FastqRecord;
 import org.jcvi.jillion.trace.fastq.FastqRecordBuilder;
-import org.jcvi.jillion.validation.NonAmbiguous;
-import org.junit.Before;
+import org.jcvi.jillion.validation.SeqNonAmbiguous;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -91,7 +90,7 @@ public class NonAmbigiousTest {
 
 
     class NucSequence{
-        @NonAmbiguous
+        @SeqNonAmbiguous
         private NucleotideSequence seq;
 
         NucSequence(String s){
@@ -100,7 +99,7 @@ public class NonAmbigiousTest {
     }
 
     class NucFasta{
-        @NonAmbiguous
+        @SeqNonAmbiguous
         private NucleotideFastaRecord seq;
 
         NucFasta(String s){
@@ -110,7 +109,7 @@ public class NonAmbigiousTest {
     }
 
     class NucFastq{
-        @NonAmbiguous
+        @SeqNonAmbiguous
         private FastqRecord seq;
 
         NucFastq(String s){

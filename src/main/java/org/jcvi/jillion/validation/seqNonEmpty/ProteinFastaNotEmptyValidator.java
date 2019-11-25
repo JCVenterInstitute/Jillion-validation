@@ -1,4 +1,4 @@
-package org.jcvi.jillion.validation;
+package org.jcvi.jillion.validation.seqNonEmpty;
 
 import org.jcvi.jillion.core.Sequence;
 import org.jcvi.jillion.fasta.aa.ProteinFastaRecord;

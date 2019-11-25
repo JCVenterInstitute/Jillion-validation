@@ -1,7 +1,6 @@
-package org.jcvi.jillion.validation;
+package org.jcvi.jillion.validation.seqNonEmpty;
 
 import org.jcvi.jillion.core.Sequence;
-import org.jcvi.jillion.trace.fastq.FastqRecord;
 import org.jcvi.jillion.trace.sff.SffFlowgram;
 
 public class SffFlowgramNotEmptyValidator extends AbstractSeqNotEmptyValidator<SffFlowgram> {
