@@ -7,11 +7,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * The annotated sequence must not be empty (have length 0).
+ */
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {NucleotideSeqNotEmptyValidator.class, ProteinSeqNotEmptyValidator.class,
                             NucleotideFastaNotEmptyValidator.class, ProteinFastaNotEmptyValidator.class,
-                            FastqNotEmptyValidator.class})
+                            FastqNotEmptyValidator.class,
+                            SffFlowgramNotEmptyValidator.class})
 public @interface SeqNotEmpty {
     String message() default "Sequence can not be empty";
     Class<?>[] groups() default {};
