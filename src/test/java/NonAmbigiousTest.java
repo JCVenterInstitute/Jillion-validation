@@ -4,6 +4,7 @@ import org.jcvi.jillion.core.residue.nt.Nucleotide;
 import org.jcvi.jillion.core.residue.nt.NucleotideSequence;
 import org.jcvi.jillion.fasta.nt.NucleotideFastaRecord;
 import org.jcvi.jillion.fasta.nt.NucleotideFastaRecordBuilder;
+import org.jcvi.jillion.trace.chromat.Chromatogram;
 import org.jcvi.jillion.trace.fastq.FastqRecord;
 import org.jcvi.jillion.trace.fastq.FastqRecordBuilder;
 import org.jcvi.jillion.validation.SeqNonAmbiguous;
@@ -18,6 +19,8 @@ import javax.validation.ValidatorFactory;
 import java.util.*;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
 @RunWith(Parameterized.class)
 public class NonAmbigiousTest {
 
@@ -34,18 +37,19 @@ public class NonAmbigiousTest {
 
     @Parameterized.Parameters(name = "{1}")
     public static Collection<Object[]> getData(){
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
+        Validator validator = ValidatorUtil.createDefaultValidator();
 
         List<Object[]> list = new ArrayList<>();
         list.add(new Object[]{validator, "", false});
-
+        list.add(new Object[]{validator, "---", false});
         list.add(new Object[]{validator, "ACGT", false});
+        list.add(new Object[]{validator, "AC-GT", false});
         list.add(new Object[]{validator, "ACGUACGU", false});
         list.add(new Object[]{validator, "AAAAAAAA", false});
 
 
         list.add(new Object[]{validator, "ACGN", true});
+        list.add(new Object[]{validator, "AC-GN", true});
         list.add(new Object[]{validator, "AAAAACCCCGGGTTTNNNN", true});
 
         for(Nucleotide n : Nucleotide.ALL_VALUES){
@@ -55,16 +59,7 @@ public class NonAmbigiousTest {
         return list;
     }
 
-    public <T> void assertNoViolations(T obj){
-        Set<ConstraintViolation<T>> violations = validator.validate(obj);
-        assertTrue(violations.isEmpty());
-    }
 
-    public <T> void assertHasViolations(T obj){
-        Set<ConstraintViolation<T>> violations = validator.validate(obj);
-        System.out.println(violations);
-        assertFalse(violations.isEmpty());
-    }
 
     @Test
     public void nucSequence(){
@@ -80,11 +75,16 @@ public class NonAmbigiousTest {
         assertValidationCorrect(new NucFastq(seq));
     }
 
+    @Test
+    public void nucChromatogram(){
+        assertValidationCorrect(new ChromatogramSeq(seq));
+    }
+
     private void assertValidationCorrect(Object obj) {
         if(isAmbigious){
-            assertHasViolations(obj);
+            ValidatorUtil.assertHasViolations(obj, validator);
         }else{
-            assertNoViolations(obj);
+            ValidatorUtil.assertNoViolations(obj, validator);
         }
     }
 
@@ -122,6 +122,18 @@ public class NonAmbigiousTest {
             Arrays.fill(q, (byte)20);
             return new QualitySequenceBuilder(q).turnOffDataCompression(true).build();
         }
+    }
+
+    class ChromatogramSeq{
+        @SeqNonAmbiguous
+        private Chromatogram seq;
+
+        ChromatogramSeq(String s){
+            this.seq = mock(Chromatogram.class);
+            when(seq.getNucleotideSequence()).thenReturn(NucleotideSequence.of(s));
+        }
+
+
     }
 
 }
